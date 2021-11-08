@@ -13,10 +13,21 @@ export default function App() {
   const [tasks, setTasks] = useState([]);
   const [text, onChangeText] = useState("");
 
-  const handleDelete = (id) => {
-    //const arr = tasks.filter((item) => item.id !== id);
+  const handleCheckMark = (idx, isComplete) => {
     const arr = [...tasks];
-    arr.splice(id, 1);
+    arr[idx] = { ...arr[idx], complete: isComplete };
+    setTasks(arr);
+  };
+
+  const handleUpdate = (idx, newName) => {
+    const arr = [...tasks];
+    arr[idx] = { ...arr[idx], name: newName };
+    setTasks(arr);
+  };
+
+  const handleDelete = (idx) => {
+    const arr = [...tasks];
+    arr.splice(idx, 1);
     setTasks(arr);
   };
 
@@ -31,7 +42,13 @@ export default function App() {
           value={text}
         />
         <Button
-          onPress={() => setTasks((oldArray) => [...oldArray, { name: text }])}
+          onPress={() => {
+            if (text !== "")
+              setTasks((oldArray) => [
+                ...oldArray,
+                { name: text, complete: false },
+              ]);
+          }}
           title="Add Task"
         ></Button>
 
@@ -41,7 +58,14 @@ export default function App() {
           <FlatList
             data={tasks}
             renderItem={({ item, index }) => (
-              <Task deleteTask={() => handleDelete(index)} text={item.name} />
+              <Task
+                idx={index}
+                handleCheckMark={handleCheckMark}
+                complete={item.complete}
+                updateTask={handleUpdate}
+                deleteTask={() => handleDelete(index)}
+                text={item.name}
+              />
             )}
           />
         </View>
