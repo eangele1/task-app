@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
+  TouchableOpacity,
   FlatList,
   TextInput,
 } from "react-native";
@@ -33,30 +33,28 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {/* Today's Tasks */}
       <View style={styles.tasksWrapper}>
-        <Text style={styles.sectionTitle}>Today's Tasks</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeText}
-          value={text}
-        />
-        <Button
-          onPress={() => {
-            if (text !== "")
+        {/* Today's Tasks */}
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Text style={{ fontSize: 24 }}>Today's Tasks</Text>
+          <TouchableOpacity
+            onPress={() =>
               setTasks((oldArray) => [
                 ...oldArray,
                 { name: text, complete: false },
-              ]);
-          }}
-          title="Add Task"
-        ></Button>
+              ])
+            }
+          >
+            <Text style={{ fontSize: 20 }}>➕</Text>
+          </TouchableOpacity>
+        </View>
 
+        {/* Tasks */}
         <View style={styles.items}>
-          {/* Tasks */}
-          {/*<Task text={"Task 1"} />*/}
           <FlatList
             data={tasks}
+            keyExtractor={(item, index) => index.toString()}
+            removeClippedSubviews={false}
             renderItem={({ item, index }) => (
               <Task
                 idx={index}
@@ -77,20 +75,11 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5dc",
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
+    backgroundColor: "#F9F9F9",
   },
   tasksWrapper: {
     paddingTop: 80,
     paddingHorizontal: 20,
-  },
-  sectionTitle: {
-    fontSize: 24,
   },
   items: {
     marginTop: 30,

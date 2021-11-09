@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 const Task = (props) => {
-  const [toggleEdit, setToggleEdit] = useState(false);
+  const [toggleEdit, setToggleEdit] = useState(true);
   const [text, onChangeText] = useState("");
 
   const handleComplete = () => {
@@ -37,9 +37,21 @@ const Task = (props) => {
           <View
             style={[
               styles.square,
-              props.complete ? { opacity: 1 } : { opacity: 0.25 },
+              props.complete
+                ? { backgroundColor: "#FFD52E" }
+                : { backgroundColor: "transparent" },
             ]}
-          />
+          >
+            {props.complete ? (
+              <Text
+                style={{ fontSize: 12, textAlign: "center", color: "white" }}
+              >
+                ✔️
+              </Text>
+            ) : (
+              <></>
+            )}
+          </View>
         </TouchableOpacity>
 
         {toggleEdit ? (
@@ -48,6 +60,7 @@ const Task = (props) => {
             style={styles.itemTextInput}
             onChangeText={onChangeText}
             value={text}
+            onSubmitEditing={() => handleEdit()}
           ></TextInput>
         ) : (
           <Text style={styles.itemText}>{props.text}</Text>
@@ -55,15 +68,15 @@ const Task = (props) => {
       </View>
       <View style={styles.itemRight}>
         <TouchableOpacity onPress={() => handleEdit()}>
-          <View style={[styles.circular, { backgroundColor: "blue" }]}>
-            <Text style={{ color: "white" }}>
-              {toggleEdit ? "OK" : "Update"}
+          <View style={[styles.circular, { backgroundColor: "transparent" }]}>
+            <Text style={{ color: "white", fontSize: 20 }}>
+              {toggleEdit ? "✅" : "📝"}
             </Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => props.deleteTask()}>
-          <View style={[styles.circular, { backgroundColor: "red" }]}>
-            <Text style={{ color: "white" }}>Delete</Text>
+          <View style={[styles.circular, { backgroundColor: "transparent" }]}>
+            <Text style={{ fontSize: 20 }}>❌</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -95,21 +108,20 @@ const styles = StyleSheet.create({
   square: {
     width: 24,
     height: 24,
-    backgroundColor: "red",
+    borderColor: "#FFD52E",
+    borderWidth: 3,
     borderRadius: 5,
     marginRight: 15,
+    alignItems: "center",
   },
-  itemText: {
-    maxWidth: "80%",
-  },
-  itemTextInput: {
-    width: 150,
-  },
+  itemText: {},
+  itemTextInput: {},
   circular: {
-    borderWidth: 2,
     borderRadius: 5,
     marginLeft: 10,
     marginRight: 10,
+    paddingHorizontal: 5,
+    alignItems: "center",
   },
 });
 
